@@ -6,8 +6,7 @@
 
 - The credentials consist of a username/password form. You should validate the user credentials locally. (admin as username and admin as password, anything different should be considered as incorrect credentials). Shows all the validation that you think makes sense.
 
-- The user should remain logged against a storage instance that fits your preference (Local db, Local storage, cookies), so if the user tries to log in already logged, it should be
-redirected to the main page, and if it is not logged and it tries to go to the main page it should be redirected to the login page.
+- The user should remain logged against a storage instance that fits your preference (Local db, Local storage, cookies), so if the user tries to log in already logged, it should be redirected to the main page, and if it is not logged and it tries to go to the main page it should be redirected to the login page.
 
 ### Main page
 

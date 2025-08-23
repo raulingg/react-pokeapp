@@ -9,6 +9,7 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import pokeball from '~/assets/pokeball.svg'
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -39,6 +40,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </body>
     </html>
   );
+}
+
+// HydrateFallback is rendered while the client loader is running
+export function HydrateFallback() {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <p className="inline-flex">Loading...<img src={pokeball} alt="Pokeapp icon" className="w-8 animate-bounce" /></p>
+    </div>
+  )
 }
 
 export default function App() {
