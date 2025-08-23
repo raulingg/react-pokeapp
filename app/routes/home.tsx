@@ -20,24 +20,38 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   return validateCredentials(credentials)
 }
 
-function validateCredentials(credentials : Credentials) {
+type ValidationError = {
+  username?: String, 
+  password?: String, 
+  invalidCredentials?: String
+} 
+
+type ValidationResult = {
+  valid: boolean,
+  errors: ValidationError
+}
+
+function validateCredentials(credentials : Credentials) : ValidationResult {
+  const errors: ValidationError = {}
+
   if (!credentials.username) {
-    return { valid: false, message: "username input must be provided"}
+    errors.username = 'username is an empty string'
   }
 
   if (!credentials.password) {
-    return { valid: false, message: "password input must be provided"}
+    errors.password = 'password is an empty string'
   }
 
-  if (credentials.username !== "admin") {
-    return { valid: false, message: "invalid username"}
+  if (errors.username || errors.password) {
+    return { valid: false, errors }
   }
 
-  if (credentials.password !== "admin") {
-    return { valid: false, message: "invalid password"}
+  if (credentials.username !== "admin" || credentials.password !== "admin") {
+    return { valid: false, errors: { invalidCredentials: 'invalid credentials' } }
   }
 
-  return { valid: true, message: "Logged in successfully" }
+  return { valid: true, errors: {} }
+  
 }
 
 export function meta({}: Route.MetaArgs) {
@@ -67,20 +81,20 @@ export default function Home({ actionData } : Route.ComponentProps) {
                 </div>
                 <div className="flex flex-col w-full">
                   <Label htmlFor="username">Username:<span aria-label="required">*</span></Label>
+                  {actionData && !!actionData.errors.username ? <p className="text-red-400">{actionData.errors.username}</p> : null}
                   <Input type="text" name="username" id="username" autoComplete="username" />
                 </div>
                 <div className="flex flex-col w-full">
                   <Label htmlFor="password">Password:<span aria-label="required">*</span></Label>
+                  {actionData && !!actionData.errors.password ? <p className="text-red-400">{actionData.errors.password}</p> : null}
                   <Input type="password" name="password" id="password" />
                 </div>
+                {actionData && !!actionData.errors.invalidCredentials ? <p className="text-red-400">{actionData.errors.invalidCredentials}</p> : null} <p></p>
                 <div className="flex flex-col">
                   <Button type="submit">Log in</Button>
                 </div>
             </fieldset>
           </Form>
-        </div>
-        <div>
-          {actionData ? <p>{actionData.message}</p> : null}
         </div>
       </div>
     </main>
