@@ -9,7 +9,7 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
-import pokeball from '~/assets/pokeball.svg'
+import Loading from "./components/ui/Loading";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -46,7 +46,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export function HydrateFallback() {
   return (
     <div className="flex justify-center items-center h-screen">
-      <p className="inline-flex">Loading...<img src={pokeball} alt="Pokeapp icon" className="w-8 animate-bounce" /></p>
+      <Loading />
     </div>
   )
 }

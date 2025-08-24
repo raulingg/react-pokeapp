@@ -4,6 +4,7 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import type { Route } from './+types/home'
 import type { PokemonApiResponse } from '~/types/pokemon'
+import { delay } from '~/lib/utils'
 
 export async function clientAction({ request }: Route.ClientActionArgs ) : Promise<PokemonApiResponse[]> {
   let formData = await request.formData();
@@ -14,6 +15,8 @@ export async function clientAction({ request }: Route.ClientActionArgs ) : Promi
   }
 
   try {
+    // delay request so we can see Loading state. Just for demo purposes
+    await delay(2000);
     const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`)
     const pokemon = await resp.json()
     return [pokemon]
@@ -29,7 +32,7 @@ export default function Home() {
 
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
-      <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
+      <div className="flex-1 flex flex-col items-center gap-16">
         <header className="flex items-center gap-4">
           <h1 className="text-5xl">Pokeapp</h1>
           <img src={PokeballIcon} alt="Pokeapp icon" className="w-16" />
@@ -38,7 +41,9 @@ export default function Home() {
           <Input id='search' name='search' type='search' placeholder='Pikachu' className='w-full' />
           <Button type='submit'>Search</Button>
         </fetcher.Form>
-        <Outlet />
+        <div className='grid content-center items-center min-h-80'>
+          <Outlet />
+        </div>
       </div>
     </main>
   )
