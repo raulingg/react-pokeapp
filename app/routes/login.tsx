@@ -1,5 +1,5 @@
-import { Form, redirect, useNavigate } from "react-router";
-import type { Route } from "./+types/home";
+import { data, redirect, useFetcher } from "react-router";
+import type { Route } from "./+types/login";
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -7,9 +7,9 @@ import PokeballIcon from '~/assets/pokeball.svg'
 import { isAuthenticated, login, type AuthCredentials } from "~/services/auth";
 
 type ValidationError = {
-  username?: String, 
-  password?: String, 
-  invalidCredentials?: String
+  username?: string, 
+  password?: string, 
+  invalidCredentials?: string
 } 
 
 type ValidationResult = {
@@ -26,14 +26,14 @@ export async function clientLoader() {
 export async function clientAction({ request }: Route.ClientActionArgs) {
   let formData = await request.formData();
   const credentials = {
-    username: formData.get('username') as String,
-    password: formData.get('password') as String
+    username: String(formData.get('username')),
+    password: String(formData.get('password'))
   }
 
   const validationResult = validateFormInputs(credentials)
 
   if (!validationResult.valid) {
-    return validationResult
+    return data({ errors: validationResult.errors }, { status: 400 }) 
   }
 
   try {
@@ -44,7 +44,8 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     if (error instanceof Error) {
       errorMessage = error.message;
     }
-    return { valid: false, errors: { invalidCredentials: errorMessage }}
+
+    return data({ errors: { invalidCredentials: errorMessage }}, { status: 400})
   }
 }
 
@@ -70,7 +71,9 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Login({ actionData } : { actionData: ValidationResult }) {
+export default function Login() {
+  const fetcher = useFetcher();
+  const errors = fetcher.data?.errors;
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
       <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
@@ -79,27 +82,27 @@ export default function Login({ actionData } : { actionData: ValidationResult })
           <img src={PokeballIcon} alt="Pokeapp icon" className="w-16" />
         </header>
         <div className="max-w-[360px] w-full rounded-3xl border border-gray-200 p-8">
-          <Form method="post">
+          <fetcher.Form method="post">
               <fieldset className="flex gap-4 flex-col justify-center items-center">
                 <div className="flex mb-8">
                   <legend className="text-3xl">Log in</legend>
                 </div>
                 <div className="flex flex-col w-full">
                   <Label htmlFor="username">Username:<span aria-label="required">*</span></Label>
-                  {actionData && !!actionData.errors.username ? <p className="text-red-400">{actionData.errors.username}</p> : null}
+                  {errors && !!errors.username ? <p className="text-red-400">{errors.username}</p> : null}
                   <Input type="text" name="username" id="username" autoComplete="username" />
                 </div>
                 <div className="flex flex-col w-full">
                   <Label htmlFor="password">Password:<span aria-label="required">*</span></Label>
-                  {actionData && !!actionData.errors.password ? <p className="text-red-400">{actionData.errors.password}</p> : null}
+                  {errors && !!errors.password ? <p className="text-red-400">{errors.password}</p> : null}
                   <Input type="password" name="password" id="password" />
                 </div>
-                {actionData && !!actionData.errors.invalidCredentials ? <p className="text-red-400">{actionData.errors.invalidCredentials}</p> : null} <p></p>
+                {errors && !!errors.invalidCredentials ? <p className="text-red-400">{errors.invalidCredentials}</p> : null} <p></p>
                 <div className="flex flex-col">
                   <Button type="submit">Log in</Button>
                 </div>
             </fieldset>
-          </Form>
+          </fetcher.Form>
         </div>
       </div>
     </main>

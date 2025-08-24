@@ -22,7 +22,7 @@
 >
 > - Feel free to use any library for local state management and UI.
 > - You can define any UI/UX definition you need to show the information. This is an example:
-[https://www.behance.net/gallery/146710797/Pokedex-Ui-Study]([https://www.behance.net/gallery/146710797/Pokedex-Ui-Study]) but feel free to do it in a way that fits better your preferences.
+[https://www.behance.net/gallery/146710797/Pokedex-Ui-Study](https://www.behance.net/gallery/146710797/Pokedex-Ui-Study) but feel free to do it in a way that fits better your preferences.
 > - We will evaluate the architecture you think is better for the app. Please take into account.
 that the app could have more features in the future.
 > - Be prepared to discuss your solution.
