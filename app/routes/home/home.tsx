@@ -4,7 +4,7 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import type { Route } from './+types/home'
 import type { PokemonApiResponse } from '~/types/pokemon'
-import { delay } from '~/lib/utils'
+import { wait } from '~/lib/utils'
 
 export async function clientAction({ request }: Route.ClientActionArgs ) : Promise<PokemonApiResponse[]> {
   let formData = await request.formData();
@@ -16,7 +16,7 @@ export async function clientAction({ request }: Route.ClientActionArgs ) : Promi
 
   try {
     // delay request so we can see Loading state. Just for demo purposes
-    await delay(2000);
+    await wait(2000);
     const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`)
     const pokemon = await resp.json()
     return [pokemon]

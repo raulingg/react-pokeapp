@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function delay(timeInMilliseconds = 1000) {
+export function wait(timeInMilliseconds = 1000) {
   return new Promise((resolve)=> {
       setTimeout(resolve, timeInMilliseconds)
   })

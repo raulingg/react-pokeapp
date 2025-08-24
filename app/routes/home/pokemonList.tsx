@@ -1,8 +1,8 @@
-import { useFetcher, useLoaderData } from 'react-router'
+import { data, useFetcher, useLoaderData, useNavigate } from 'react-router'
 import { SEARCH_POKEMON_FORM_KEY, type clientAction } from './home'
 import PokemonCard from '~/components/ui/pokemonCard'
 import Loading from '~/components/ui/Loading'
-import type { PokemonApiResponseWithBasicProps } from '~/types/pokemon'
+import type { PokemonApiResponse, PokemonApiResponseWithBasicProps } from '~/types/pokemon'
 
 
 export async function clientLoader() : Promise<PokemonApiResponseWithBasicProps[]> {
@@ -11,7 +11,7 @@ export async function clientLoader() : Promise<PokemonApiResponseWithBasicProps[
     const { results } = await resp.json() 
     return results
   } catch (error) {
-    return []
+    throw data({ message: 'Oops! Something went wrong when loading pokemon list. Try to reload the page'}, { status: 404 })
   }
 }
 
@@ -20,13 +20,10 @@ export function shouldRevalidate() {
 }
 
 export default function PokemonList() {
+  const navigate = useNavigate()
   const fetcher = useFetcher<typeof clientAction>( { key: SEARCH_POKEMON_FORM_KEY });
   const data = useLoaderData<typeof clientLoader>()
   const pokemonList = fetcher.data ?? data
-
-  function handleCardClick() {
-    // TODO: Open detail view modal
-  }
 
   if (fetcher.state === 'submitting') {
     return <Loading />
@@ -39,7 +36,7 @@ export default function PokemonList() {
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
       {pokemonList.map((pokemon) => (
-        <PokemonCard key={pokemon.name} pokemon={pokemon} onClick={handleCardClick} />
+        <PokemonCard key={pokemon.name} pokemon={pokemon} />
       ))}
     </div>
   )

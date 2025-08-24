@@ -1,23 +1,26 @@
 import type { PokemonApiResponse, PokemonApiResponseWithBasicProps } from "~/types/pokemon"
 import { Card, CardContent, CardHeader, CardTitle } from "./card"
+import { Link } from "react-router"
 
 type PokemonCardProps = {
-  pokemon: PokemonApiResponse | PokemonApiResponseWithBasicProps
-  onClick: (event: React.SyntheticEvent) => void
+  pokemon: PokemonApiResponse | PokemonApiResponseWithBasicProps,
 }
-export default function PokemonCard({ pokemon, onClick } : PokemonCardProps ) {
+
+export default function PokemonCard({ pokemon } : PokemonCardProps ) {
   const { name } = pokemon
   const src = getPokemonImageSrc(pokemon)
 
   return (
-    <Card onClick={onClick} className='w-64 h-64'>
-      <CardHeader>
-        <CardTitle className='text-center'>{name}</CardTitle>
-      </CardHeader>
-      <CardContent className='flex place-content-center'>
-        <img src={src} className='h-40' />
-      </CardContent>
-    </Card>
+    <Link to={`/pokemon/${pokemon.name}`}>
+      <Card className='w-64 h-64 cursor-pointer hover:scale-102 focus:scale-102'>
+        <CardHeader>
+          <CardTitle className='text-center'>{name}</CardTitle>
+        </CardHeader>
+        <CardContent className='flex place-content-center'>
+          <img src={src} className='h-40' />
+        </CardContent>
+      </Card>
+    </Link>
   )
 }
 
