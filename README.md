@@ -2,11 +2,13 @@
 
 A modern, production-ready Pokeapp SPA written in Typescript using react-router@7, TaildwindCSS and Vite
 
-Check it out 👉 [Demo](https://react-pokeapp-9896.onrender.com/) 👀
+Check it out 👉 [Demo](https://react-pokeapp-9896.onrender.com/) 👀 
+
+__Demo Credentials:__ username: `admin`, password: `admin`
 
 ## Features
 
-- Authentication with username/password
+- Authentication with username/password ()
 - Paginated Pokemon List
 - Pokemon Detail View
 - Pokemon Search Bar
