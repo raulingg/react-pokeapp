@@ -1,16 +1,22 @@
-import { useEffect, useState } from "react";
-import type { AuthUser } from "./authContext";
-import AuthContext from "./authContext";
+import { useEffect, useState } from 'react';
+import type { AuthUser } from './authContext';
+import AuthContext from './authContext';
 
-export default function AuthProvider({ children }: { children: React.ReactNode }) {
+export default function AuthProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [user, setUser] = useState<AuthUser | null>(null);
 
   useEffect(() => {
-    const serializedSession = localStorage.getItem('session')
-    const session = serializedSession ? JSON.parse(serializedSession) as { user: AuthUser } : null
+    const serializedSession = localStorage.getItem('session');
+    const session = serializedSession
+      ? (JSON.parse(serializedSession) as { user: AuthUser })
+      : null;
 
-    if (session) { 
-      setUser(session.user)
+    if (session) {
+      setUser(session.user);
     }
   }, []);
 
@@ -18,5 +24,5 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
-  )
+  );
 }

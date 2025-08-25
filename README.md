@@ -1,18 +1,22 @@
-# Welcome to React Router!
+# Welcome to Pokeapp
 
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+A modern, production-ready Pokeapp SPA built with react-router@7, TaildwindCSS and Vite
 
 ## Features
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- Authentication with username/password
+- Paginated Pokemon List
+- Pokemon Detail View
+- Pokemon Search Bar
+
+Read [Acceptance criteria (AC)](./acceptance-criteria.md)
+
+## Design
+
+- Why using typescript? I think there are several benefits of using it over only javascript, the main benefits for me are early error detection in your code and DX. Besides, if we plan to build new features (as it seems the case) the app will grow, so Typescript is probably better for large projects.
+- I decided to choose react-router framework along with Vite to build the application because of the short learning curve, popularity, familiarity, design. Why choosing the react-router v7 (latest) ? So, I want to learn this new version by building (more challenging, more fun! 😄). By the way, this new version is pretty cool 😎 🚀
+- For styling I chose TailwindCSS since it helped me focus more on the functionality rather than styles. Plus, The majority of UI components were created using [shadcn](https://ui.shadcn.com/) which is set of pre-styled UI components helping create common/reusable UI blocks blazingly fast 🔥 🚀
+- Which things are missing? Linting, Formatting, Testing 😬, ...
 
 ## Getting Started
 
