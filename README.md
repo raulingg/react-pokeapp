@@ -1,6 +1,6 @@
 # Welcome to Pokeapp
 
-A modern, production-ready Pokeapp SPA built with react-router@7, TaildwindCSS and Vite
+A modern, production-ready Pokeapp SPA written in Typescript using react-router@7, TaildwindCSS and Vite
 
 Check it out 👉 [Demo](https://react-pokeapp-9896.onrender.com/) 👀
 
