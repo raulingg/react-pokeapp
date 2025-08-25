@@ -48,6 +48,7 @@ export default function PokemonList() {
   });
   const { results, previous, next } = useLoaderData<typeof clientLoader>();
   const pokemonList = fetcher.data ?? results;
+  const shouldShowPagination = !fetcher.data
   const nextOffset = getOffset(next);
   const prevOffset = getOffset(previous);
 
@@ -61,7 +62,7 @@ export default function PokemonList() {
 
   return (
     <>
-      <PokemonPagination next={nextOffset} prev={prevOffset} />
+      {shouldShowPagination && <PokemonPagination next={nextOffset} prev={prevOffset} />}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-4 pt-4">
         {pokemonList.map((pokemon) => (
           <PokemonCard
@@ -71,7 +72,7 @@ export default function PokemonList() {
           />
         ))}
       </div>
-      <PokemonPagination next={nextOffset} prev={prevOffset} />
+      {shouldShowPagination && <PokemonPagination next={nextOffset} prev={prevOffset} />}
     </>
   );
 }
