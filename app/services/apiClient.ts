@@ -7,8 +7,12 @@ const PAGINATION_LIMIT = 20
 /**
  * Get a list of pokemons paginated @see https://pokeapi.co/docs/v2#resource-listspagination-section 
  */
-export async function getPaginatedPokemonList(url?: string) : Promise<PaginatedPokemonApiResponse> {
-  const resp = await fetch(url || `${POKEMON_ENDPOINT_URL}?limit=${PAGINATION_LIMIT}`)
+export async function getPaginatedPokemonList(offset: number) : Promise<PaginatedPokemonApiResponse> {
+  const params = new URLSearchParams()
+
+  params.set('offset', String(offset))
+  params.set('limit', String(PAGINATION_LIMIT))
+  const resp = await fetch(`${POKEMON_ENDPOINT_URL}?${params.toString()}`)
   const data = await resp.json()
   return data
 }
