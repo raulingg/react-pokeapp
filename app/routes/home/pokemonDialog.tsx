@@ -7,15 +7,13 @@ import {
 import { Badge } from "~/components/ui/badge"
 import { data, useLoaderData, useNavigate } from "react-router"
 import type { Route } from "./+types/pokemonDialog"
-import type { PokemonApiResponse } from "~/types/pokemon"
-import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs"
+import { getPokemon } from "~/services/apiClient"
 
-
-export async function clientLoader({ params } : Route.ClientLoaderArgs) : Promise<PokemonApiResponse> {
+export async function clientLoader({ params } : Route.ClientLoaderArgs) {
   try {
-    const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${params.name}`)
-    return await resp.json()
+    const resp = await getPokemon(params.name)
+    return resp
   } catch (error) {
     throw data({ message: `Pokemon Not Found for search name/id ${params.name}` }, { status: 404 })
   }
@@ -31,7 +29,7 @@ export default function PokemonDialog() {
 
   return (
     <Dialog defaultOpen onOpenChange={handleOpenChange}>
-      <DialogContent className="w-80">
+      <DialogContent className="w-80" aria-description={`Detail view for "${pokemon.name}" pokemon`}>
         <DialogHeader>
           <DialogTitle className="text-center">{pokemon.name}</DialogTitle>
         </DialogHeader>
@@ -41,7 +39,7 @@ export default function PokemonDialog() {
           </div>
           <div className="flex gap-2 flex-wrap justify-center">
             {pokemon.types.map(({ type }) => (
-              <Badge variant='default'>{type.name}</Badge>
+              <Badge key={type.name} variant='default'>{type.name}</Badge>
             ))}
           </div>
           <Tabs defaultValue="abilities" className="items-center">
@@ -53,18 +51,18 @@ export default function PokemonDialog() {
             <TabsContent value="abilities" className="max-h-24 overflow-scroll self-start w-full">
               <ul className="list-disc">
                 {pokemon.abilities.map(({ ability }) => (
-                  <a href={ability.url} target="_blank" rel="noopener noreferrer">
-                    <li key={ability.name}>{ability.name}</li>
-                  </a>
+                  <li key={ability.name}>
+                    <a href={ability.url} target="_blank" rel="noopener noreferrer">{ability.name}</a>
+                  </li>
                 ))}
               </ul>
             </TabsContent>
             <TabsContent value="moves" className="max-h-24 overflow-scroll self-start w-full">
               <ul className="list-disc">
                 {pokemon.moves.map(({ move }) => (
-                  <a href={move.url} target="_blank" rel="noopener noreferrer">
-                    <li key={move.name}>{move.name}</li>
-                  </a>
+                  <li key={move.name}>
+                    <a href={move.url} target="_blank" rel="noopener noreferrer">{move.name}</a>
+                  </li>
                 ))}
               </ul>
             </TabsContent>

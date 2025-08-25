@@ -1,4 +1,11 @@
-export type PokemonApiResponseWithBasicProps = {
+export type PaginatedPokemonApiResponse = {
+  results: PaginatedPokemonApiResponseResult[],
+  count: number,
+  next: string,
+  previous: string
+}
+
+export type PaginatedPokemonApiResponseResult = {
   name: string,
   url: string
 }

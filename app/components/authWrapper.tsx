@@ -9,12 +9,10 @@ export async function clientLoader() {
   }
 }
 
-export default function AuthWrapper({ children } : { children: ReactNode }) {
-  console.log("🚀 ~ AuthWrapper ~ AuthWrapper:")
+export default function AuthWrapper() {
   return (
     <AuthProvider>
       <Outlet />
-      {children}
     </AuthProvider>
   )
 }
