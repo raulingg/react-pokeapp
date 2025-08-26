@@ -9,7 +9,7 @@ export default [
   layout('components/authWrapper.tsx', [
     route('/', 'routes/home/home.tsx', [
       index('routes/home/pokemonList.tsx'),
-      route('/pokemon/:name', 'routes/home/pokemonDialog.tsx'),
+      route('/pokemon', 'routes/home/pokemon.tsx'),
     ]),
   ]),
   route('/login', 'routes/login.tsx'),
