@@ -1,14 +1,10 @@
 import {
   data,
-  useFetcher,
   useLoaderData,
-  useSearchParams,
   type ShouldRevalidateFunctionArgs,
 } from 'react-router';
-import { SEARCH_POKEMON_FORM_KEY, type clientAction } from './home';
 import PokemonCard from '~/components/ui/pokemonCard';
-import Loading from '~/components/ui/Loading';
-import { getPokemonImageSrc } from '~/lib/utils';
+import { getPokemonImageSrc, wait } from '~/lib/utils';
 import { getPaginatedPokemonList } from '~/services/apiClient';
 import PokemonPagination from '~/components/ui/pokemonPagination';
 import type { Route } from './+types/pokemonList';
@@ -22,6 +18,8 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   }
 
   try {
+    await wait(1000);
+
     const data = await getPaginatedPokemonList(offset);
     return data;
   } catch (error) {
@@ -43,18 +41,13 @@ export function shouldRevalidate({
 }
 
 export default function PokemonList() {
-  const fetcher = useFetcher<typeof clientAction>({
-    key: SEARCH_POKEMON_FORM_KEY,
-  });
-  const { results, previous, next } = useLoaderData<typeof clientLoader>();
-  const pokemonList = fetcher.data ?? results;
-  const shouldShowPagination = !fetcher.data
+  const {
+    results: pokemonList,
+    previous,
+    next,
+  } = useLoaderData<typeof clientLoader>();
   const nextOffset = getOffset(next);
   const prevOffset = getOffset(previous);
-
-  if (fetcher.state === 'submitting') {
-    return <Loading />;
-  }
 
   if (!pokemonList || pokemonList.length === 0) {
     return <p>Pokemon not found</p>;
@@ -62,7 +55,7 @@ export default function PokemonList() {
 
   return (
     <>
-      {shouldShowPagination && <PokemonPagination next={nextOffset} prev={prevOffset} />}
+      <PokemonPagination next={nextOffset} prev={prevOffset} />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-4 pt-4">
         {pokemonList.map((pokemon) => (
           <PokemonCard
@@ -72,7 +65,7 @@ export default function PokemonList() {
           />
         ))}
       </div>
-      {shouldShowPagination && <PokemonPagination next={nextOffset} prev={prevOffset} />}
+      <PokemonPagination next={nextOffset} prev={prevOffset} />
     </>
   );
 }
